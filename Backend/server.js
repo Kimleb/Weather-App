@@ -19,7 +19,7 @@ app.use(express.json());
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
   max: 100,
-  message: { error: 'Too many requests from this IP, please try again later.' },
+  message: { error: 'Too many requests, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -41,7 +41,7 @@ app.use(session({
     httpOnly: true, // Prevents browser JavaScript XSS access
     secure: isProduction, // TRUE forces HTTPS in production, FALSE allows testing on HTTP localhost
     sameSite: 'strict', // Strong CSRF defense
-    maxAge: 1000 * 60 * 60 * 24 // 24 hours
+    maxAge: 1000 * 60 * 15 // 15 minutes
   }
 }));
 
