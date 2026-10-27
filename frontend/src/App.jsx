@@ -95,13 +95,13 @@ export default function App() {
         </a>
         <div className="topbar-right">
           <span className="live-dot" />
-          <span>Current conditions</span>
+          <span>Live Weather Updates</span>
         </div>
       </header>
 
       <section className="intro">
         <p className="eyebrow"><span className="eyebrow-line" /> YOUR DAY, IN CONTEXT</p>
-        <h1>Weather, made <em>clear.</em></h1>
+        <h1>Kimleb Companies Weather <em>Station</em></h1>
         <p className="intro-subtitle">A little more clarity for wherever life takes you.</p>
 
         <form className="search-form" onSubmit={searchWeather}>
