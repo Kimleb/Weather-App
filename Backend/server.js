@@ -2,10 +2,13 @@ import 'dotenv/config';
 import express from 'express';
 import session from 'express-session';
 import helmet from 'helmet';
-import rateLimit from 'express-rate-limit'; // New security feature recommendation
+import rateLimit from 'express-rate-limit'; 
+import cors from 'cors';// New security feature recommendation
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173'
+}));
 
 // --- 1. GLOBAL SECURITY & INFRASTRUCTURE CONFIG ---
 app.set('trust proxy', 1); // Crucial for reverse proxies & rate limiters
@@ -15,7 +18,7 @@ app.use(express.json());
 // Real API Rate Limiter (Max 100 requests per 15 minutes per IP address)
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
-  max: 5,
+  max: 100,
   message: { error: 'Too many requests from this IP, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
@@ -99,10 +102,16 @@ app.get('/weather', async (req, res) => {
     res.json(CleanResponse);
   } catch (error) {
     console.error('Server error or inactive key:', error.message);
-    return res.status(404).json({ error: 'Kindly Check your internet connection....'+ error.message });
+    return res.status(404).json({ error: 'City not found, kindly use a valid city name. Example: Nakuru, Nairobi, Kisumu, Mombasa' });
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running, Go query to find weather information via http://localhost:${PORT}`);
-});
+export default app;
+
+if (process.env.VERCEL !== '1') {
+  const PORT = process.env.PORT || 3000;
+
+  app.listen(PORT, () => {
+    console.log(`Weather API running on port ${PORT}`);
+  });
+}
