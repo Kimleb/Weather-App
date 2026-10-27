@@ -1,0 +1,13 @@
+
+-----> Everytime I want to commit I should remove the .env file
+
+
+# 1. Back up the files safely outside the project folder
+cp Backend/.env ../backend_env_safe 2>/dev/null || cp frontend/.env ../frontend_env_safe 2>/dev/null
+
+# 2. Force Git to untrack any .env file anywhere in the directory structure
+git rm -f **/.*env
+
+
+
+cp ../backend_env_safe Backend/.env 2>/dev/null || cp ../frontend_env_safe frontend/.env 2>/dev/null
